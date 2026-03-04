@@ -1,9 +1,5 @@
-import json
 import argparse
-import parsing_hitmo
-
-with open("sources.json", "r", encoding="utf-8") as file:
-    source = json.load(file)
+import spreader
 
 parser = argparse.ArgumentParser(description="Загрузчик музыки из онлайн-источников с поддержкой интерактивного поиска и пакетной загрузки по плейлисту.")
 parser.add_argument(
@@ -22,13 +18,22 @@ parser.add_argument(
     help="путь к txt с плейлистом"
 )
 
+parser.add_argument(
+    "-s",
+    "--source",
+    type=str,
+    default="hitmo",
+    help="доступные сайты: hitmo, mp3party (по стандарту: hitmo)"
+)
+
 args = parser.parse_args()
 PATH = args.path
 PLAYLIST = args.playlist
+SOURCE = args.source
 
 
 if PLAYLIST == "":
     search_input = input("Введи название исполнителя или трека:\n")
-    parsing_hitmo.download(source["hitmo"], search_input, PATH, mode=0)
+    spreader.spread(SOURCE, search_input, PATH)
 else:
-    parsing_hitmo.download_playlist(source["hitmo"], PLAYLIST, PATH)
+    spreader.spread_playlist(SOURCE, PLAYLIST, PATH)

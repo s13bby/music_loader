@@ -5,7 +5,7 @@ import parsing_hitmo
 with open("sources.json", "r", encoding="utf-8") as file:
     source = json.load(file)
 
-parser = argparse.ArgumentParser(description="добавлю позже")
+parser = argparse.ArgumentParser(description="Загрузчик музыки из онлайн-источников с поддержкой интерактивного поиска и пакетной загрузки по плейлисту.")
 parser.add_argument(
     "-p",
     "--path",

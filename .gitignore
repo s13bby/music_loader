@@ -208,3 +208,8 @@ __marimo__/
 
 *.txt
 *.mp3
+downloads/
+temp/
+*.png
+*.jpg
+*.webp

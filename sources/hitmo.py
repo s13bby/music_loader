@@ -3,6 +3,7 @@ import time
 import requests
 import subprocess
 from bs4 import BeautifulSoup
+from tqdm import tqdm
 
 def download(what_, where_, mode=0):
     search_url_artist = "https://rus.hitmotop.com/" + "search?q=" + what_.replace(" ", "%20")
@@ -47,16 +48,24 @@ def download(what_, where_, mode=0):
         os.makedirs(where_, exist_ok=True)
         save_path = os.path.join(where_, filename)
         time.sleep(2)
-        result = subprocess.run(["curl", "-L", "-o", save_path, download_url], capture_output=True, text=True)
 
-        if result.returncode != 0:
-            print(f"Ошибка загрузки: {result.stderr}")
-            return False
+        head = requests.head(download_url, headers={"User-Agent": "Mozilla/5.0"})
+        total_size = int(head.headers.get('content-length', 0))
+
+        with requests.get(download_url, stream=True, headers={"User-Agent": "Mozilla/5.0"}) as r:
+            r.raise_for_status()
+            with tqdm(total=total_size, unit='B', unit_scale=True, desc=filename) as pbar:
+                with open(save_path, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        f.write(chunk)
+                        pbar.update(len(chunk))
+
         print(f"Скачано: {filename}")
-        return True
+        return save_path, artist, title
+
     else:
         print("Ссылка для скачивания не найдена")
-        return False
+        return False, False, False
 
 def download_playlist(playlist_path, where_, delay=5):
     if not os.path.exists(playlist_path):

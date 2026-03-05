@@ -76,7 +76,7 @@ python main.py --import_playlist yandex
 4. Скопируйте ссылку из открывшегося окна
 5. Запустите:
    ```bash
-   python main.py --import_playlist
+   python main.py --import_playlist yandex
    ```
 6. Вставьте скопированный HTML-код
 

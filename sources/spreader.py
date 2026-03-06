@@ -1,4 +1,4 @@
-from sources import hitmo, mp3party, yandex_pl, cover
+from sources import hitmo, mp3party, yandex_pl, spotify, cover
 
 def spread(from_, search_input, path, cover_mode):
     match from_:
@@ -58,6 +58,11 @@ def spread_playlist(from_, playlist_path, path, cover_mode):
                 mp3party.download_playlist(playlist_path, path)
 
 def import_playlist(streaming):
-    link = input("Введи HTML-код на плейлист\n")
-    owner, kind = yandex_pl.extract_playlist_info(link)
-    yandex_pl.get_tracks_from_playlist(owner, kind)
+    if streaming == "yandex":
+        link = input("Введи HTML-код на плейлист\n")
+        owner, kind = yandex_pl.extract_playlist_info(link)
+        yandex_pl.get_tracks_from_playlist(owner, kind)
+
+    elif streaming == "spotify":
+        playlist_path = input("Инструкция по получению плейлиста spotify в формате .json описана в README.md\nУкажи путь к плейлисту в формате .json\n")
+        spotify.get_tracks_from_playlist(playlist_path)

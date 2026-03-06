@@ -36,7 +36,7 @@ parser.add_argument(
     "--import_playlist",
     type=str,
     default="",
-    help="Импортировать плейлист из стриминг-сервиса (доступно: yandex)"
+    help="Импортировать плейлист из стриминг-сервиса (доступно: yandex, spotify)"
 )
 
 args = parser.parse_args()

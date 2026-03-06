@@ -213,3 +213,5 @@ temp/
 *.png
 *.jpg
 *.webp
+test.py
+*.json

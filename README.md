@@ -140,4 +140,19 @@ music_loader/
 
 ---
 
-> **Примечание:** Проект предназначен для личного использования. Возможны неточности при поиске треков/обложек, особенно в плейлист режиме. Соблюдайте авторские права при загрузке контента. Автор не несет отвественности за полученные блокировки со стороны сайтов.
+> ## Дисклеймер|Disclaimer
+>Данный проект предназначен исключительно для личного и образовательного использования.
+>
+>Программа использует сторонние источники данных для поиска треков, обложек и метаданных. В отдельных случаях возможны неточности в результатах поиска, особенно при работе с плейлистами.
+>
+>Пользователь несет полную ответственность за соблюдение авторских прав и условий использования контента при загрузке или использовании материалов, полученных с помощью данного проекта.
+>
+>Автор проекта не связан с сервисами, используемыми программой, и не несет ответственности за возможные ограничения, блокировки или иные действия со стороны сторонних сервисов.
+>
+>This project is intended for personal and educational use only.
+>
+>The software uses third-party sources to search for tracks, artwork, and metadata. In some cases, inaccuracies may occur in search results, especially when processing playlists.
+>
+>Users are solely responsible for complying with copyright laws and the terms of service of the platforms when downloading or using content obtained through this project.
+>
+>The project author is not affiliated with the services used by the software and is not responsible for any restrictions, bans, or other actions imposed by third-party platforms.

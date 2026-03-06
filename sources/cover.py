@@ -8,6 +8,7 @@ from yandex_music import Client
 from PIL import Image
 from mutagen.mp3 import MP3
 from mutagen.id3 import ID3, APIC
+from tqdm import tqdm
 
 def get_yandex_cover(artist, track):
     save_path = None

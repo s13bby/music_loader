@@ -3,7 +3,7 @@ import time
 import requests
 import subprocess
 from bs4 import BeautifulSoup
-from tqdm import tqdm
+
 
 def download(what_, where_, mode=0):
     search_url_artist = "https://mp3party.net/" + "search?q=" + what_.replace(" ", "%20")

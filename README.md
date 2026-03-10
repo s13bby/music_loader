@@ -1,14 +1,15 @@
 # 🎵 Music Loader
 
-Загрузчик музыки из онлайн-источников с поддержкой интерактивного поиска и пакетной загрузки по плейлисту.
+Загрузчик музыки из онлайн-источников с поддержкой интерактивного поиска, пакетной загрузки и импорта плейлистов.
 
 ## 📋 Возможности
 
 - 🔍 **Интерактивный поиск** — выбор трека из списка найденных результатов
 - 📜 **Пакетная загрузка** — скачивание треков из плейлиста (файл `.txt`)
-- 🌐 **Несколько источников** — поддержка hitmo и mp3party
-- 🎨 **Обложки треков** — автоматическое добавление обложек из Яндекс Музыки
-- 📥 **Импорт плейлистов** — загрузка списка треков из плейлистов Яндекс Музыки и Spotify
+- 🌐 **Несколько источников** — поддержка hitmo и youtube
+- 🎨 **Обложки треков** — автоматическое добавление обложек из Яндекс Музыки и iTunes
+- 📥 **Импорт плейлистов** — загрузка списков треков из плейлистов Яндекс Музыки и Spotify
+- 📀 **Поиск альбомов** — поиск и экспорт альбомов в плейлист из iTunes и Яндекс Музыки
 - ⏱️ **Автоматическая задержка** — пауза между загрузками для избежания блокировок
 - 📁 **Гибкое хранение** — настройка папки для сохранения файлов
 
@@ -17,7 +18,7 @@
 - Python 3.13+
 - Библиотеки:
   ```bash
-  pip install requests beautifulsoup4 tqdm mutagen pillow yandex_music
+  pip install requests beautifulsoup4 tqdm mutagen pillow yandex_music yt_dlp
   ```
 
 ## 📖 Использование
@@ -33,38 +34,34 @@ python main.py [опции]
 | Опция | Описание |
 |-------|----------|
 | `-h`, `--help` | Показать справку |
-| `-p`, `--path` | Путь для сохранения (по умолчанию: `downloads/`) |
-| `-pl`, `--playlist` | Путь к файлу плейлиста (`.txt`) |
-| `-s`, `--source` | Источник: `hitmo`, `mp3party` (по умолчанию: `hitmo`) |
-| `--add_cover` | Добавить обложку к треку (по умолчанию: выключено) |
-| `--import_playlist` | Импортировать плейлист из Яндекс Музыки или Spotify |
+| `-a`, `--album` | Импортировать альбом (itunes, yandex) |
+| `-i`, `--import_playlist` | Импортировать плейлист (yandex, spotify) |
+| `-p`, `--playlist` | Путь к файлу плейлиста (`.txt`) |
+| `-s`, `--source` | Источник: `hitmo`, `youtube` (по умолчанию: `hitmo`) |
 
 ### Примеры
 
 **Интерактивный режим** (поиск и выбор трека):
 ```bash
 python main.py
-python main.py -s mp3party
-python main.py -s hitmo -p my_music/ 
+python main.py -s youtube
 ```
 
 **Пакетная загрузка** (из плейлиста):
 ```bash
-python main.py -pl playlist.txt
-python main.py -s mp3party -pl playlist.txt
-python main.py -s hitmo -pl playlist.txt -p my_music/
-```
-
-**С обложкой**:
-```bash
-python main.py --add_cover
-python main.py -pl playlist.txt --add_cover
+python main.py -p playlist.txt
+python main.py -s youtube -p playlist.txt
 ```
 
 **Импорт плейлиста**:
 ```bash
-python main.py --import_playlist yandex
-python main.py --import_playlist spotify
+python main.py -i yandex
+python main.py -i spotify
+```
+
+**Поиск альбома**:
+```bash
+python main.py -a
 ```
 
 ## 🎵 Импорт плейлиста из Яндекс Музыки
@@ -77,7 +74,7 @@ python main.py --import_playlist spotify
 4. Скопируйте ссылку из открывшегося окна
 5. Запустите:
    ```bash
-   python main.py --import_playlist yandex
+   python main.py -i yandex
    ```
 6. Вставьте скопированный HTML-код
 
@@ -101,11 +98,23 @@ python main.py --import_playlist spotify
 12. Создай файл с расширением `.json` и сохрани в него скопированный ответ
 13. Запусти:
     ```bash
-    python main.py --import_playlist spotify
+    python main.py -i spotify
     ```
 14. Укажи путь к созданному JSON-файлу
 
-После этого в текущей папке появится файл `playlist_spotify.txt` с треками.
+После этого в текущей папке появится файл `<случайное_имя>.txt` с треками.
+
+## 📀 Поиск и импорт альбома
+
+Для поиска и импорта альбома:
+
+1. Запустите:
+   ```bash
+   python main.py -a
+   ```
+2. Введите артиста и название альбома в формате: `артист название`
+3. Альбом будет найден в iTunes или Яндекс Музыке
+4. В текущей папке появится файл `<название_альбома>.txt` с треками
 
 ## 📝 Формат плейлиста
 
@@ -120,39 +129,79 @@ booker джанк
 
 ## ⏱️ Задержка между загрузками
 
-При использовании плейлиста между скачиваниями треков автоматически добавляется задержка в **7 секунд** для предотвращения временной блокировки со стороны сайта.
-При использовании ручного режима перед скачиванием трека автоматически добавляется задержка в **2 секунды** для предотвращения временной блокировки со стороны сайта.
+При использовании плейлиста между скачиваниями треков автоматически добавляется задержка, указанная в `settings.json` (по умолчанию: **1 секунда**) для предотвращения временной блокировки со стороны сайта.
+
+## ⚙️ Настройки
+
+Создайте файл `settings.json` в корне проекта:
+
+```json
+{
+    "delay": 1,
+    "save to": "downloads/",
+    "cover": true,
+    "source": "hitmo",
+    "proxy": "http://ip:port"
+}
+```
+
+| Параметр | Описание |
+|----------|----------|
+| `delay` | Задержка между запросами (сек) |
+| `save to` | Папка для сохранения треков |
+| `cover` | Автоматическая установка обложек |
+| `source` | Источник по умолчанию (`hitmo` или `youtube`) |
+| `proxy` | Прокси для YouTube (требуется для работы в РФ) |
+
+## 🌐 Источники
+
+| Источник | Описание |
+|----------|----------|
+| **hitmo** (ru, eu) | Основной источник |
+| **youtube** | Вспомогательный источник (требуется прокси для работы в РФ) |
+
+## 🎨 Обложки и метаданные
+
+| Сервис | Обложки | Альбомы | Плейлисты |
+|--------|---------|---------|-----------|
+| Яндекс Музыка | ✅ | ✅ | ✅ |
+| iTunes | ✅ | ✅ | ❌ |
+| Spotify | ❌ | ❌ | ✅ |
 
 ## 📂 Структура проекта
 
 ```
 music_loader/
-├── main.py          # Точка входа
-└── sources/
-    ├── cover.py     # Парсер и установщик обложки
-    ├── hitmo.py     # Парсер Hitmo
-    ├── spreader.py  # Распределитель запросов
-    ├── mp3party.py  # Парсер MP3Party
-    ├── yandex_pl.py # Импорт плейлиста с Яндекс Музыки
-    └── spotify.py   # Импорт плейлиста из Spotify
-
+├── main.py
+├── core/
+│   ├── album.py        # Поиск альбома, экспортирование в плейлист
+│   ├── cover.py        # Поиск, скачивание и установка обложек
+│   ├── hitmo.py        # Парсинг сайта, поиск и скачивание треков
+│   ├── import_playlist.py # Импорт плейлистов из Яндекс и Spotify
+│   └── youtube.py      # Поиск и скачивание треков с YouTube
+├── settings.json
+├── LICENSE
+├── README.md
+└── .gitignore
 ```
 
 ---
 
 > ## Дисклеймер | Disclaimer
->Данный проект предназначен исключительно для личного и образовательного использования.
+> Данный проект предназначен исключительно для личного и образовательного использования.
 >
->Программа использует сторонние источники данных для поиска треков, обложек и метаданных. В отдельных случаях возможны неточности в результатах поиска, особенно при работе с плейлистами.
+> Программа использует сторонние источники данных для поиска треков, обложек и метаданных. В отдельных случаях возможны неточности в результатах поиска, особенно при работе с плейлистами.
 >
->Пользователь несет полную ответственность за соблюдение авторских прав и условий использования контента при загрузке или использовании материалов, полученных с помощью данного проекта.
+> Пользователь несет полную ответственность за соблюдение авторских прав и условий использования контента при загрузке или использовании материалов, полученных с помощью данного проекта.
 >
->Автор проекта не связан с сервисами, используемыми программой, и не несет ответственности за возможные ограничения, блокировки или иные действия со стороны сторонних сервисов.
+> Автор проекта не связан с сервисами, используемыми программой, и не несет ответственности за возможные ограничения, блокировки или иные действия со стороны сторонних сервисов.
 >
->This project is intended for personal and educational use only.
+> This project is intended for personal and educational use only.
 >
->The software uses third-party sources to search for tracks, artwork, and metadata. In some cases, inaccuracies may occur in search results, especially when processing playlists.
+> The software uses third-party sources to search for tracks, artwork, and metadata. In some cases, inaccuracies may occur in search results, especially when processing playlists.
 >
->Users are solely responsible for complying with copyright laws and the terms of service of the platforms when downloading or using content obtained through this project.
+> Users are solely responsible for complying with copyright laws and the terms of service of the platforms when downloading or using content obtained through this project.
 >
->The project author is not affiliated with the services used by the software and is not responsible for any restrictions, bans, or other actions imposed by third-party platforms.
+> The project author is not affiliated with the services used by the software and is not responsible for any restrictions, bans, or other actions imposed by third-party platforms.
+>
+> **сделано:** s13bby

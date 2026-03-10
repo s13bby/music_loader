@@ -1,0 +1,7 @@
+{
+    "delay": 1,
+    "save to": "downloads/",
+    "cover": true,
+    "source": "hitmo",
+    "proxy": "http://ip:port"
+}

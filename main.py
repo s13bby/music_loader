@@ -13,7 +13,7 @@ except Exception:
 
 def arguments():
     parser = argparse.ArgumentParser(description="Загрузчик музыки из онлайн-источников с поддержкой интерактивного поиска, пакетной загрузки и импорта плейлистов.")
-    parser.add_argument("-a", "--album", type=str, default="", help="Импортировать альбом")
+    parser.add_argument("-a", "--album", action="store_true", help="Импортировать альбом")
     parser.add_argument("-i", "--import_playlist", type=str, default="", help="Импортировать плейлист")
     parser.add_argument("-p", "--playlist", type=str, default="", help="Скачать список из txt")
     parser.add_argument("-s", "--source", type=str, default=f"{settings['source']}", help="Источник (hitmo/youtube)")
